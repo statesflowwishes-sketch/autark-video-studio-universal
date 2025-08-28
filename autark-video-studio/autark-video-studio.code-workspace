@@ -1,0 +1,254 @@
+{
+  "folders": [
+    {
+      "name": "🎬 AUTARK Video Studio",
+      "path": "."
+    },
+    {
+      "name": "🧠 AUTARK Core System",
+      "path": "./autark"
+    },
+    {
+      "name": "🎥 AI Video Pipeline",
+      "path": "./ai-video-pipeline"
+    },
+    {
+      "name": "🧠 Deep Thinking Engine",
+      "path": "./deep-thinking"
+    },
+    {
+      "name": "📚 Knowledge Base",
+      "path": "./knowledge-base"
+    },
+    {
+      "name": "📤 Exports & Output",
+      "path": "./exports"
+    }
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "./autark/venv/bin/python",
+    "python.terminal.activateEnvironment": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.formatting.provider": "black",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "basic",
+    
+    "jupyter.notebookFileRoot": "${workspaceFolder}",
+    "jupyter.alwaysTrustNotebooks": true,
+    
+    "files.associations": {
+      "*.md": "markdown",
+      "*.yml": "yaml",
+      "*.yaml": "yaml",
+      "*.json": "jsonc"
+    },
+    
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    },
+    
+    "terminal.integrated.cwd": "${workspaceFolder}",
+    "terminal.integrated.env.linux": {
+      "PYTHONPATH": "${workspaceFolder}/autark/src:${workspaceFolder}/ai-video-pipeline",
+      "AUTARK_HOME": "${workspaceFolder}",
+      "CUDA_VISIBLE_DEVICES": "0"
+    },
+    
+    "workbench.colorTheme": "Dark+ (default dark)",
+    "workbench.iconTheme": "material-icon-theme",
+    
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/venv": true,
+      "**/__pycache__": true,
+      "**/.*": true,
+      "**/exports/**": true
+    },
+    
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/*.pyc": true,
+      "**/venv": true,
+      "**/.git": true,
+      "**/node_modules": true
+    },
+    
+    "git.ignoreLimitWarning": true,
+    
+    "markdown.preview.fontSize": 14,
+    "markdown.preview.lineHeight": 1.6,
+    
+    "emmet.includeLanguages": {
+      "markdown": "html"
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "ms-toolsai.jupyter",
+      "ms-python.black-formatter",
+      "ms-python.flake8",
+      "ms-python.pylint",
+      "charliermarsh.ruff",
+      "ms-vscode.vscode-json",
+      "redhat.vscode-yaml",
+      "yzhang.markdown-all-in-one",
+      "shd101wyy.markdown-preview-enhanced",
+      "streetsidesoftware.code-spell-checker",
+      "streetsidesoftware.code-spell-checker-german",
+      "bradlc.vscode-tailwindcss",
+      "esbenp.prettier-vscode",
+      "ms-vscode.vscode-typescript-next",
+      "pkief.material-icon-theme",
+      "github.copilot",
+      "github.copilot-chat",
+      "ms-vscode-remote.remote-containers",
+      "ms-azuretools.vscode-docker",
+      "eamodio.gitlens"
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "🚀 Install AUTARK System",
+        "type": "shell",
+        "command": "cd autark && python -m venv venv && source venv/bin/activate && pip install -e .",
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🛠️ Install AI Tools",
+        "type": "shell",
+        "command": "cd ai-video-pipeline && python install_all_tools.py",
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🧠 Run Deep Thinking Demo",
+        "type": "shell",
+        "command": "cd deep-thinking && python demo.py",
+        "group": "test",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🎬 Start AUTARK Studio",
+        "type": "shell",
+        "command": "cd autark && source venv/bin/activate && python -m autark.demo.studio_demo",
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "problemMatcher": [],
+        "isBackground": true
+      },
+      {
+        "label": "📊 System Benchmark",
+        "type": "shell",
+        "command": "cd autark && source venv/bin/activate && python -c \"import autark; import asyncio; asyncio.run(autark.create_studio().benchmark_performance())\"",
+        "group": "test",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🧹 Clean Cache",
+        "type": "shell",
+        "command": "find . -type d -name __pycache__ -exec rm -r {} + 2>/dev/null || true",
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "📦 Export Project",
+        "type": "shell",
+        "command": "tar -czf autark_video_studio_$(date +%Y%m%d).tar.gz --exclude=venv --exclude=node_modules --exclude=.git --exclude=__pycache__ .",
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "problemMatcher": []
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "🧠 Debug Deep Thinking",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/deep-thinking/demo.py",
+        "console": "integratedTerminal",
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}/autark/src"
+        }
+      },
+      {
+        "name": "🎬 Debug AUTARK Studio",
+        "type": "python",
+        "request": "launch",
+        "module": "autark.demo.studio_demo",
+        "console": "integratedTerminal",
+        "cwd": "${workspaceFolder}/autark",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}/autark/src"
+        }
+      },
+      {
+        "name": "🛠️ Debug Tool Installation",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/ai-video-pipeline/install_all_tools.py",
+        "console": "integratedTerminal",
+        "cwd": "${workspaceFolder}/ai-video-pipeline"
+      }
+    ]
+  },
+  "compounds": [
+    {
+      "name": "🚀 Full System Debug",
+      "configurations": [
+        "🧠 Debug Deep Thinking",
+        "🎬 Debug AUTARK Studio"
+      ]
+    }
+  ]
+}

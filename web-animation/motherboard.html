@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🖥️ PC Motherboard Animation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .motherboard-container {
+            position: relative;
+            width: 90vw;
+            height: 80vh;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            border: 3px solid #00ffff;
+            border-radius: 10px;
+            box-shadow: 
+                0 0 50px rgba(0, 255, 255, 0.3),
+                inset 0 0 50px rgba(0, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        /* Motherboard PCB Pattern */
+        .pcb-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #2a4f3e 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, #2a4f3e 2px, transparent 2px),
+                linear-gradient(45deg, transparent 40%, rgba(0, 255, 255, 0.1) 41%, rgba(0, 255, 255, 0.1) 59%, transparent 60%);
+            background-size: 50px 50px, 50px 50px, 100px 100px;
+            opacity: 0.6;
+        }
+
+        /* CPU Socket */
+        .cpu {
+            position: absolute;
+            top: 20%;
+            left: 25%;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            border: 3px solid #ffff00;
+            border-radius: 8px;
+            box-shadow: 
+                0 0 30px rgba(255, 255, 0, 0.8),
+                inset 0 0 20px rgba(255, 107, 53, 0.5);
+            animation: cpu-pulse 2s ease-in-out infinite alternate;
+        }
+
+        .cpu::before {
+            content: 'CPU';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #000;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* RAM Slots */
+        .ram-slot {
+            position: absolute;
+            width: 20px;
+            height: 80px;
+            background: linear-gradient(90deg, #00ff00, #32cd32);
+            border: 2px solid #00ff00;
+            border-radius: 4px;
+            animation: ram-glow 1.5s ease-in-out infinite alternate;
+        }
+
+        .ram-slot:nth-child(3) { top: 15%; right: 20%; animation-delay: 0s; }
+        .ram-slot:nth-child(4) { top: 15%; right: 15%; animation-delay: 0.3s; }
+        .ram-slot:nth-child(5) { top: 15%; right: 10%; animation-delay: 0.6s; }
+        .ram-slot:nth-child(6) { top: 15%; right: 5%; animation-delay: 0.9s; }
+
+        /* GPU Slot */
+        .gpu {
+            position: absolute;
+            bottom: 15%;
+            left: 15%;
+            width: 200px;
+            height: 40px;
+            background: linear-gradient(90deg, #8a2be2, #da70d6);
+            border: 3px solid #ff69b4;
+            border-radius: 6px;
+            box-shadow: 
+                0 0 40px rgba(255, 105, 180, 0.6),
+                inset 0 0 20px rgba(138, 43, 226, 0.3);
+            animation: gpu-activity 3s ease-in-out infinite;
+        }
+
+        .gpu::before {
+            content: 'GPU SLOT';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-weight: bold;
+            font-size: 12px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Capacitors */
+        .capacitor {
+            position: absolute;
+            width: 12px;
+            height: 25px;
+            background: linear-gradient(180deg, #ffd700, #ffea00);
+            border: 1px solid #ffd700;
+            border-radius: 6px 6px 2px 2px;
+            animation: capacitor-charge 2.5s ease-in-out infinite;
+        }
+
+        .capacitor:nth-child(7) { top: 40%; left: 60%; animation-delay: 0s; }
+        .capacitor:nth-child(8) { top: 42%; left: 64%; animation-delay: 0.5s; }
+        .capacitor:nth-child(9) { top: 44%; left: 68%; animation-delay: 1s; }
+        .capacitor:nth-child(10) { top: 60%; left: 45%; animation-delay: 0.8s; }
+        .capacitor:nth-child(11) { top: 62%; left: 49%; animation-delay: 1.3s; }
+
+        /* Data Flow Paths */
+        .data-flow {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            animation: data-movement 4s linear infinite;
+        }
+
+        .data-flow.horizontal {
+            height: 2px;
+            top: 50%;
+            left: 0;
+            width: 100%;
+        }
+
+        .data-flow.vertical {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            top: 0;
+        }
+
+        .data-flow.diagonal-1 {
+            width: 2px;
+            height: 141.42%; /* sqrt(2) * 100% */
+            left: 30%;
+            top: -20.71%;
+            transform: rotate(45deg);
+            transform-origin: center;
+        }
+
+        .data-flow.diagonal-2 {
+            width: 2px;
+            height: 141.42%;
+            right: 30%;
+            top: -20.71%;
+            transform: rotate(-45deg);
+            transform-origin: center;
+        }
+
+        /* Power LED */
+        .power-led {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background: #ff0000;
+            border: 2px solid #ff4444;
+            border-radius: 50%;
+            box-shadow: 
+                0 0 20px rgba(255, 0, 0, 0.8),
+                inset 0 0 10px rgba(255, 68, 68, 0.5);
+            animation: power-blink 1s ease-in-out infinite alternate;
+        }
+
+        /* System Status Display */
+        .status-display {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: #00ff00;
+            font-size: 12px;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+            animation: text-flicker 3s ease-in-out infinite;
+        }
+
+        /* Animations */
+        @keyframes cpu-pulse {
+            0% { 
+                box-shadow: 0 0 30px rgba(255, 255, 0, 0.8), inset 0 0 20px rgba(255, 107, 53, 0.5);
+                transform: scale(1);
+            }
+            100% { 
+                box-shadow: 0 0 50px rgba(255, 255, 0, 1), inset 0 0 30px rgba(255, 107, 53, 0.8);
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes ram-glow {
+            0% { 
+                box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+                background: linear-gradient(90deg, #00ff00, #32cd32);
+            }
+            100% { 
+                box-shadow: 0 0 25px rgba(0, 255, 0, 1);
+                background: linear-gradient(90deg, #32cd32, #7fff00);
+            }
+        }
+
+        @keyframes gpu-activity {
+            0%, 100% { 
+                box-shadow: 0 0 40px rgba(255, 105, 180, 0.6), inset 0 0 20px rgba(138, 43, 226, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 60px rgba(255, 105, 180, 1), inset 0 0 40px rgba(138, 43, 226, 0.6);
+            }
+        }
+
+        @keyframes capacitor-charge {
+            0% { 
+                background: linear-gradient(180deg, #ffd700, #ffea00);
+                transform: scaleY(1);
+            }
+            50% {
+                background: linear-gradient(180deg, #ffff00, #ffff99);
+                transform: scaleY(1.1);
+            }
+            100% { 
+                background: linear-gradient(180deg, #ffd700, #ffea00);
+                transform: scaleY(1);
+            }
+        }
+
+        @keyframes data-movement {
+            0% { 
+                background: linear-gradient(90deg, transparent, transparent, transparent);
+            }
+            25% {
+                background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            }
+            50% {
+                background: linear-gradient(90deg, transparent, transparent, #00ffff);
+            }
+            75% {
+                background: linear-gradient(90deg, #00ffff, transparent, transparent);
+            }
+            100% { 
+                background: linear-gradient(90deg, transparent, transparent, transparent);
+            }
+        }
+
+        @keyframes power-blink {
+            0% { 
+                background: #ff0000;
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+            }
+            100% { 
+                background: #ff6666;
+                box-shadow: 0 0 30px rgba(255, 0, 0, 1);
+            }
+        }
+
+        @keyframes text-flicker {
+            0%, 100% { opacity: 1; }
+            25% { opacity: 0.8; }
+            50% { opacity: 0.9; }
+            75% { opacity: 0.7; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .motherboard-container {
+                width: 95vw;
+                height: 70vh;
+            }
+            
+            .cpu {
+                width: 80px;
+                height: 80px;
+                top: 25%;
+                left: 30%;
+            }
+            
+            .gpu {
+                width: 150px;
+                height: 30px;
+                bottom: 20%;
+            }
+            
+            .ram-slot {
+                width: 15px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="motherboard-container">
+        <div class="pcb-pattern"></div>
+        
+        <!-- CPU -->
+        <div class="cpu"></div>
+        
+        <!-- RAM Slots -->
+        <div class="ram-slot"></div>
+        <div class="ram-slot"></div>
+        <div class="ram-slot"></div>
+        <div class="ram-slot"></div>
+        
+        <!-- GPU Slot -->
+        <div class="gpu"></div>
+        
+        <!-- Capacitors -->
+        <div class="capacitor"></div>
+        <div class="capacitor"></div>
+        <div class="capacitor"></div>
+        <div class="capacitor"></div>
+        <div class="capacitor"></div>
+        
+        <!-- Data Flow Paths -->
+        <div class="data-flow horizontal"></div>
+        <div class="data-flow vertical"></div>
+        <div class="data-flow diagonal-1"></div>
+        <div class="data-flow diagonal-2"></div>
+        
+        <!-- Power LED -->
+        <div class="power-led"></div>
+        
+        <!-- System Status -->
+        <div class="status-display">
+            SYSTEM ONLINE<br>
+            CPU: 3.2 GHz<br>
+            RAM: 16 GB<br>
+            GPU: ACTIVE<br>
+            TEMP: 42°C
+        </div>
+    </div>
+
+    <script>
+        // Zusätzliche JavaScript-Animationen
+        document.addEventListener('DOMContentLoaded', function() {
+            // Zufällige Aktivitäts-Spitzen für mehr Realismus
+            function randomActivity() {
+                const components = document.querySelectorAll('.cpu, .gpu, .ram-slot');
+                components.forEach(component => {
+                    if (Math.random() > 0.7) {
+                        component.style.filter = 'brightness(1.5)';
+                        setTimeout(() => {
+                            component.style.filter = 'brightness(1)';
+                        }, 200);
+                    }
+                });
+            }
+
+            // System-Status Updates
+            function updateStatus() {
+                const statusDisplay = document.querySelector('.status-display');
+                const temps = [38, 39, 40, 41, 42, 43, 44, 45];
+                const cpuSpeeds = [3.0, 3.1, 3.2, 3.3, 3.4];
+                
+                const newTemp = temps[Math.floor(Math.random() * temps.length)];
+                const newSpeed = cpuSpeeds[Math.floor(Math.random() * cpuSpeeds.length)];
+                
+                statusDisplay.innerHTML = `
+                    SYSTEM ONLINE<br>
+                    CPU: ${newSpeed} GHz<br>
+                    RAM: 16 GB<br>
+                    GPU: ACTIVE<br>
+                    TEMP: ${newTemp}°C
+                `;
+            }
+
+            // Aktivitäts-Simulation starten
+            setInterval(randomActivity, 1000);
+            setInterval(updateStatus, 3000);
+
+            // Maus-Interaktion für CPU
+            const cpu = document.querySelector('.cpu');
+            cpu.addEventListener('mouseover', function() {
+                this.style.animationDuration = '0.5s';
+                this.style.transform = 'scale(1.1)';
+            });
+
+            cpu.addEventListener('mouseout', function() {
+                this.style.animationDuration = '2s';
+                this.style.transform = 'scale(1)';
+            });
+
+            // Vollbild-Toggle mit Doppelklick
+            document.addEventListener('dblclick', function() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            });
+
+            console.log('🖥️ PC Motherboard Animation gestartet!');
+            console.log('💡 Doppelklick für Vollbild');
+            console.log('🖱️ Hover über CPU für Interaktion');
+        });
+    </script>
+</body>
+</html>

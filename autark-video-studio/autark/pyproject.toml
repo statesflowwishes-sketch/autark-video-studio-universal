@@ -1,0 +1,126 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autark"
+version = "1.0.0"
+description = "AUTARK Knowledge Integration System - High-Performance NLP Deep Thinking for Video Generation"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "HolyThreeKingsTreesCrowns", email = "team@video-studio.ai"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    # Core AI/ML
+    "torch>=2.0.0",
+    "transformers>=4.35.0",
+    "numpy>=1.24.0",
+    "scipy>=1.11.0",
+    "scikit-learn>=1.3.0",
+    
+    # Video Processing
+    "opencv-python>=4.8.0",
+    "moviepy>=1.0.3",
+    "imageio>=2.31.0",
+    "pillow>=10.0.0",
+    "ffmpeg-python>=0.2.0",
+    
+    # Audio Processing  
+    "librosa>=0.10.0",
+    "soundfile>=0.12.0",
+    "pydub>=0.25.0",
+    
+    # NLP Deep Thinking
+    "spacy>=3.7.0",
+    "nltk>=3.8.0",
+    "textblob>=0.17.0",
+    
+    # Web & API
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
+    "requests>=2.31.0",
+    "httpx>=0.25.0",
+    
+    # Data & Storage
+    "pandas>=2.1.0",
+    
+    # Utilities
+    "tqdm>=4.66.0",
+    "pyyaml>=6.0.0",
+    "click>=8.1.0",
+    "rich>=13.0.0",
+    "loguru>=0.7.0",
+    
+    # System utilities
+    "psutil>=5.9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.6.0",
+]
+gpu = [
+    "cupy-cuda12x>=12.0.0",
+    "accelerate>=0.24.0",
+]
+tools = [
+    # Text-to-Video Tools
+    "diffusers>=0.21.0",
+    "xformers>=0.0.22",
+    "controlnet-aux>=0.4.0",
+    
+    # Specialized Video Tools
+    "manim>=0.17.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/holythreekingstreescrowns/autark-video-studio"
+Documentation = "https://docs.autark-video-studio.ai"
+Repository = "https://github.com/holythreekingstreescrowns/autark-video-studio.git"
+Issues = "https://github.com/holythreekingstreescrowns/autark-video-studio/issues"
+
+[project.scripts]
+autark = "autark.cli:main"
+autark-server = "autark.server:run"
+autark-demo = "autark.demo:run_demo"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+autark = ["data/*", "models/*", "templates/*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
